@@ -169,9 +169,9 @@
 
 import {addDays, format} from 'date-fns';
 import React, {useEffect, useState} from 'react';
-import {Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {Agenda} from 'react-native-calendars';
-import Modal from 'react-native-modal';
+
 type Item = {
   name: string;
   cookies: boolean;
@@ -192,7 +192,7 @@ export const Calender: React.FC = () => {
 
     const getData = async () => {
       const response = await fetch(
-        'https://jsonplaceholder.typicode.com/posts',
+        'https://internshipapp-e9ba1-default-rtdb.firebaseio.com/calendar.json',
       );
       const data: Post[] = await response.json();
 
@@ -222,24 +222,10 @@ export const Calender: React.FC = () => {
     getData();
   }, []);
 
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
   const renderItem = (item: Post) => {
     return (
       <View style={styles.itemContainer}>
-        <Button title="Show modal" onPress={toggleModal} />
-
-        <Modal isVisible={isModalVisible}>
-        <View style={{flex: 1}}>
-          <Text>Hello!</Text>
-          
-
-          <Button title="Hide modal" onPress={toggleModal} />
-        </View>
-      </Modal>
+        <Text>{item.task}</Text>
         
       </View>
     );

@@ -7,11 +7,9 @@ import { APP_SCREEN, RootStackParamList } from '../../../navigation/screenType';
 import { StudentsList } from '../../../model/studentsList';
 import styles from '../../Projects/design/styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import firestore from '@react-native-firebase/firestore';
+import firestore, { firebase } from '@react-native-firebase/firestore';
 import Todos from '../components/Todo/Todo'
 import { Divider } from '../../SignIn/design/components/Divider/Divider';
-import { navigate } from '../../../navigation/navigationService';
-import { add } from 'react-native-reanimated';
 import FormButton from '../../Chat/design/components/FormButton/FormButton';
 
 
@@ -29,14 +27,16 @@ const ProjectDetail = ({ route, navigation }: ProjectDetailProbs) => {
   const [todo, setTodo] = useState('');
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
   //function
   async function addTodo() {
     await ref.add({
       title: todo,
-      complete: false,
+      createAt: timestamp()
     });
     setTodo('');
+
   }
 
   const onPressComeBack = () => {
@@ -45,14 +45,14 @@ const ProjectDetail = ({ route, navigation }: ProjectDetailProbs) => {
 
   // effect
   useEffect(() => {
-    return ref.onSnapshot(querySnapshot => {
-      const list: ((prevState: never[]) => never[]) | { id: string; title: any; complete: any; }[] = [];
+    return ref.orderBy('createAt','desc').onSnapshot(querySnapshot => {
+      const list: ((prevState: never[]) => never[]) | { id: string; title: any; createAt: any }[] = [];
       querySnapshot.forEach(doc => {
-        const { title, complete } = doc.data();
+        const { title, createAt } = doc.data();
         list.push({
           id: doc.id,
           title,
-          complete,
+          createAt,
         });
       });
 
@@ -120,10 +120,10 @@ const ProjectDetail = ({ route, navigation }: ProjectDetailProbs) => {
                   style={styles.addButton}>
                 </FormButton>
 
-              <Divider />
+                <Divider />
               </View>
-            </View > 
-            <View style={{flex:1}}>
+            </View >
+            <View style={{ flex: 1 }}>
 
               <FlatList
                 style={{ flex: 1 }}

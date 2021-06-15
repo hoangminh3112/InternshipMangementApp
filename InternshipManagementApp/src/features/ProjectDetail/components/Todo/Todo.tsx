@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
 
   },
   button: {
-   
-    
+
+
     width: '40%',
     alignSelf: 'center',
     marginTop: 10,
@@ -46,32 +46,25 @@ const styles = StyleSheet.create({
 
 })
 
-function Todos({ id, title, complete }) {
-  async function toggleComplete() {
-    await firestore()
-      .collection('todos')
-      .doc(id)
-      .update({
-        complete: !complete,
-      });
-  }
+function Todos({ id, title }: any) {
+
   async function deleteToDo() {
     await firestore()
       .collection('todos')
       .doc(id)
       .delete().then(() => {
-        Alert.alert('Item removed from database')
+        Alert.alert('Completed!')
 
       })
   }
 
   const openTwoButtonAlert = () => {
     Alert.alert(
-      'Delete ',
+      'Completed? ',
       'Are you sure?',
       [
         { text: 'Yes', onPress: () => deleteToDo() },
-        { text: 'No', onPress: () => Alert.alert('No item was removed'), style: 'cancel' },
+        { text: 'No', onPress: () => Alert.alert('Nothing changed'), style: 'cancel' },
       ],
       {
         cancelable: true
@@ -82,9 +75,9 @@ function Todos({ id, title, complete }) {
 
     <View style={styles.container} >
       <Text>{title}</Text>
-      <Text>{complete}</Text>
+  
       <Divider />
-      
+
       <FormButton
         title='Completed'
         modeValue='contained'

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button, Image, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { onPress } from '../../Projects/design/components/SignOut/SignOut';
 import styles from '../../Projects/design/styles'
 import { VictoryPie } from 'victory-native'
 import { ScrollView } from 'react-native';
-import Modal from 'react-native-modal';
+
 
 export const Statistics = () => {
   const graphicData = [
@@ -14,11 +14,6 @@ export const Statistics = () => {
     { y: 50, x: '50%' },
 
   ]
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
   const graphicColor = [
     '#7A9EBB', '#DF4666', '#E5A45E'
   ]
@@ -62,17 +57,6 @@ export const Statistics = () => {
         </View>
       </View>
       <ScrollView >
-      <View style={{flex: 1}}>
-      <Button title="Show modal" onPress={toggleModal} />
-
-      <Modal isVisible={isModalVisible}>
-        <View style={{flex: 1}}>
-          <Text>Hello!</Text>
-
-          <Button title="Hide modal" onPress={toggleModal} />
-        </View>
-      </Modal>
-    </View>
         <View style={styles.body}>
 
         <View style={styles.works}>
